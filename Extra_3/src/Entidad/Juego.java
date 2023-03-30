@@ -71,6 +71,8 @@ public class Juego {
                 }
             }
         }
+        limpiaPantalla();
+        System.out.println("Jugador 2 perdiste!\n El número a adivinar era "+ nAdivinar + ".");
         puntosJ1++;
     }
 
