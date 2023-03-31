@@ -19,6 +19,7 @@ public class Receta {
     private String procedimiento;
     private int contIngredientes;
 
+    // inicio constructores
     public Receta(int ingredientes) {
         this.ingredientes = new String[ingredientes][2];
         contIngredientes = ingredientes;
@@ -31,14 +32,7 @@ public class Receta {
         contIngredientes = 15;
         limpiaIngredientes();
     }
-
-    /// pone los ingredientes y cantidades en vacio ("")
-    private void limpiaIngredientes() {
-        for (int i = 0; i < contIngredientes; i++) {
-            ingredientes[i][0] = "";
-            ingredientes[i][1] = "";
-        }
-    }
+    // fin constructores
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -87,7 +81,7 @@ public class Receta {
                 receta = receta + procedimiento.substring(i, i + 1);
             } else {
                 k = 0;
-                receta = receta + "\n ";
+                receta = receta + "\n";
             }
             k++;/// es para realizar un salto de linea después de cierta cantidad de caracteres (50) pero continua hasta que encuentre un espacio
         }
@@ -96,25 +90,17 @@ public class Receta {
 
     public void aniadeIngrediente() {
         // inicialización de Scanner
-        int id = 1;
+        int id = 0, n;
         Scanner leer = new Scanner(System.in);
         System.out.println("Ingrese los ingredientes");
         System.out.println("------------------------");
-        do {
-            System.out.flush();            
-            System.out.print("Ingrediente " + id + ": ");
-            ingredientes[id - 1][0] = leer.nextLine();
-            System.out.print("Cantidad del ingrediente " + id + ": ");
-            ingredientes[id - 1][1] = leer.nextLine();
-            System.out.println("");
-            System.out.println("¿Desea agregar mas ingredientes? (s/n) ");
-            if (leer.nextLine().equalsIgnoreCase("n")) {
-                break;
-            } else {
-                id++;
-            }
+        System.out.print("Ingrese la cantidad de ingredientes (maximo 15): ");
+        n = leer.nextInt();
 
-        } while (id < contIngredientes);
+        do {
+            cargaIngrediente(id);
+            id++;
+        } while (id < n);
         contIngredientes = id;
     }
 
@@ -143,5 +129,23 @@ public class Receta {
             }
         }
         return (cont == ingre.length - 1);
+    }
+
+    /// pone los ingredientes y cantidades en vacio ("")
+    private void limpiaIngredientes() {
+        for (int i = 0; i < contIngredientes; i++) {
+            ingredientes[i][0] = "";
+            ingredientes[i][1] = "";
+        }
+    }
+
+    /// carga ingrediente individual
+    private void cargaIngrediente(int id) {
+        // inicialización de Scanner
+        Scanner leer = new Scanner(System.in);
+        System.out.print("Ingrediente " + (id + 1) + ": ");
+        ingredientes[id][0] = leer.nextLine();
+        System.out.print("Cantidad del ingrediente " + (id + 1) + ": ");
+        ingredientes[id][1] = leer.nextLine();
     }
 }

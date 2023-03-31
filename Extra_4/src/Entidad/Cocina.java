@@ -18,13 +18,14 @@ public class Cocina {
 
     private Receta[] recetas;
     private int contRecetas;
+    private String separador="--------------------------------------------------";
+    
 
     public Cocina() {
     }
-    
-    
-    public void setCantidadRecetas(int cantidad){
-        if (contRecetas!=0){
+
+    public void setCantidadRecetas(int cantidad) {
+        if (contRecetas != 0) {
             System.out.println("La cantidad de recetas ya esta asignada.");
             System.out.println(recetas[0]);
             return;
@@ -32,18 +33,18 @@ public class Cocina {
         this.recetas = new Receta[cantidad];
         this.contRecetas = cantidad;
     }
-    
+
     public void mostrarNombreRecetas() {
-        System.out.println(" Recetas disponibles:");
-        System.out.println("----------------------");
-        if (recetas[0].getNombre().equals("")) {
-            System.out.println("No hay recetas para mostrar.");
-            return;
-        }
+        System.out.println(  "          Recetas disponibles: " + recetas.length);
+        System.out.println(separador);
+
         for (int i = 0; i < contRecetas; i++) {
-            System.out.println("1) " + recetas[i].getNombre());
+            if ((recetas[i] != null)) {
+                System.out.println((1+i)+") " + recetas[i].getNombre());
+            }
+            System.out.println(separador);
         }
-        System.out.println("----------------------");
+        
     }
 
     public void buscaReceta(String nombre) {
@@ -61,46 +62,58 @@ public class Cocina {
         //limpiaPantalla();
         System.out.println(recetas[id].toString());
     }
-
-    private void limpiaPantalla() {
-        try {
-            Robot robot = new Robot();
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_L);
-            robot.keyRelease(KeyEvent.VK_L);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-        } catch (AWTException e) {
+    public void buscaReceta(String[] ingredientes){
+        System.out.println(separador);
+        for (Receta receta:recetas) {
+            if (receta.ingredientesEnRecetaB(ingredientes)){                
+                System.out.println(receta.toString());
+                System.out.println(separador);
+            }
         }
     }
+    
 
     public void creaRecetas() {
         Scanner leer = new Scanner(System.in);
-        for (Receta receta : recetas) {
-            receta= new Receta();
+        for (int i = 0; i < contRecetas; i++) {
+            recetas[i] = new Receta();
             System.out.println("Ingrese el nombre de la receta: ");
-            receta.setNombre(leer.nextLine());
-            receta.aniadeIngrediente();
-            receta.aniadeProcedimiento();
-            System.out.println(receta.toString());
+            recetas[i].setNombre(leer.nextLine());
+            recetas[i].aniadeIngrediente();
+            recetas[i].aniadeProcedimiento();
+            System.out.println(recetas[i].toString());
         }
     }
-    public void listarRecetas(){
+
+    public void listarRecetas() {
         if (recetas == null) {
             System.out.println("Primero ahi que cargar recetas.");
             return;
         }
-        
+
         System.out.println("Lista de recetas: ");
-        
+
         for (int i = 0; i < recetas.length; i++) {
-             System.out.println(recetas[i].toString());
-             System.out.println("-------------------------------------------------------");}
-        
+            listarRecetas(i);
+            System.out.println(separador);
+        }
+
     }
-    public String[] getTitulos(){
-        String[] lista=new String[this.contRecetas];
+
+    public void listarRecetas(int id) {
+        if (recetas == null) {
+            System.out.println("Primero ahi que cargar recetas.");
+            return;
+        }
+        if (id >= 0 && id < recetas.length) {
+            System.out.println(recetas[id].toString());
+        }
+    }
+
+    public String[] getTitulos() {
+        String[] lista = new String[this.contRecetas];
         for (int i = 0; i < contRecetas; i++) {
-            lista[i]=recetas[i].getNombre();
+            lista[i] = recetas[i].getNombre();
         }
         return lista;
     }
