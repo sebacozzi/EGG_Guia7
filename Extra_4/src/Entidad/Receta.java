@@ -31,12 +31,17 @@ public class Receta {
         contIngredientes = 15;
         limpiaIngredientes();
     }
+
     /// pone los ingredientes y cantidades en vacio ("")
     private void limpiaIngredientes() {
         for (int i = 0; i < contIngredientes; i++) {
             ingredientes[i][0] = "";
             ingredientes[i][1] = "";
         }
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getNombre() {
@@ -62,10 +67,13 @@ public class Receta {
                 ling = ingredientes[i][0].length();
             }
         }
-        if (ling==0) {
+        if (ling == 0) {
             return "La receta no tiene ingredientes";
         }
         for (int i = 0; i < ling; i++) {
+            if (ingredientes[i][0].equals("")) {
+                break;
+            }
             receta = receta + "  " + ingredientes[i][0];
             espacios = (ling - ingredientes[i][0].length()) + 2;
             for (int j = 0; j < espacios; j++) {
@@ -75,11 +83,11 @@ public class Receta {
         }
         receta = receta + "Procedimiento:\n";
         for (int i = 0; i < procedimiento.length(); i++) {
-            if ((k >= 50) && (procedimiento.substring(i, i + 1) == " ")) {
+            if (k < 50 || !procedimiento.substring(i, i + 1).equals(" ")) {
+                receta = receta + procedimiento.substring(i, i + 1);
+            } else {
                 k = 0;
                 receta = receta + "\n ";
-            } else {
-                receta = receta + procedimiento.substring(i, i + 1);
             }
             k++;/// es para realizar un salto de linea después de cierta cantidad de caracteres (50) pero continua hasta que encuentre un espacio
         }
@@ -88,29 +96,52 @@ public class Receta {
 
     public void aniadeIngrediente() {
         // inicialización de Scanner
-        int id=1;
+        int id = 1;
         Scanner leer = new Scanner(System.in);
         System.out.println("Ingrese los ingredientes");
         System.out.println("------------------------");
-        do{
-            System.out.print("Ingrediente "+ id + ": ");
-            ingredientes[id-1][0]=leer.nextLine();
-            System.out.print("Cantidad del ingrediente "+ id + ": ");
-            ingredientes[id-1][1]=leer.nextLine();
+        do {
+            System.out.flush();            
+            System.out.print("Ingrediente " + id + ": ");
+            ingredientes[id - 1][0] = leer.nextLine();
+            System.out.print("Cantidad del ingrediente " + id + ": ");
+            ingredientes[id - 1][1] = leer.nextLine();
             System.out.println("");
             System.out.println("¿Desea agregar mas ingredientes? (s/n) ");
-            if (leer.next().equalsIgnoreCase("s")) {
+            if (leer.nextLine().equalsIgnoreCase("n")) {
                 break;
-            }else id++;
+            } else {
+                id++;
+            }
 
-        }while(id<contIngredientes);
-            contIngredientes=id;
+        } while (id < contIngredientes);
+        contIngredientes = id;
     }
-    public void aniadeProcedimiento(){
+
+    public void aniadeProcedimiento() {
         // inicialización de Scanner
         Scanner leer = new Scanner(System.in);
         System.out.println("Ingrese el procedimiento para realizar la receta:");
-        procedimiento=leer.nextLine();
+        procedimiento = leer.nextLine();
     }
-    
+
+    public String ingredientesEnReceta(String[] ingre) {
+        if (ingredientesEnRecetaB(ingre)) {
+            return toString();
+        }
+        return "";
+    }
+
+    public boolean ingredientesEnRecetaB(String[] ingre) {
+        int cont = 0;
+        for (String in : ingre) {
+            for (String[] ingrediente : ingredientes) {
+                if (ingrediente[0].equalsIgnoreCase(in)) {
+                    cont++;
+                    break;
+                }
+            }
+        }
+        return (cont == ingre.length - 1);
+    }
 }
