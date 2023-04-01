@@ -67,6 +67,7 @@ public class Extra_4 {
                     n = leer.nextInt();
                     cocina.setCantidadRecetas(n);
                     cocina.creaRecetas();
+                    mainMenu.esperaTecla();
                     break;
                 }
                 case 2: {
@@ -75,10 +76,12 @@ public class Extra_4 {
                         switch (menuRecetas1.pregunta(true)) {
                             case 1: { /// mostrar nombres de recetas
                                 cocina.mostrarNombreRecetas();
+                                menuRecetas1.esperaTecla();
                                 break;
                             }
                             case 2: { /// Mostrar todas las recetas
                                 cocina.listarRecetas();
+                                menuRecetas1.esperaTecla();
                                 break;
                             }
                             case 3: { /// Menu con lista de nombres de recetas y muestra la receta elejida
@@ -88,11 +91,12 @@ public class Extra_4 {
                                 int Lrecetas = recetas.length;
                                 do {
                                     System.out.println(menuRecetas2);
-                                    if (menuRecetas2.pregunta(true) == Lrecetas+1) {
+                                    if (menuRecetas2.pregunta(true) == Lrecetas + 1) {
                                         sMR2 = false;
                                     } else {
-                                        System.out.println("receta "+menuRecetas2.getResultado());
+                                        System.out.println("receta " + menuRecetas2.getResultado());
                                         cocina.listarRecetas(menuRecetas2.getResultado() - 1);
+                                        menuRecetas2.esperaTecla();
                                     }
                                 } while (sMR2);
                                 break;
@@ -119,13 +123,16 @@ public class Extra_4 {
                                 System.out.print("Ingrese el nombre de la receta: ");
 
                                 cocina.buscaReceta(leer.nextLine());
+                                menuBuscar.esperaTecla();
                             }
                             case 2 -> { /// busca receta por ingredientes
-
+                                cocina.buscaReceta(cargaIngredientes());
+                                menuBuscar.esperaTecla();
                             }
                             case 3 -> /// volver al menu principal
                                 sMB = false;
                         }
+
                     } while (sMB);
                     break;
                 }
@@ -135,15 +142,26 @@ public class Extra_4 {
         } while (sMM);
     }
 
-    private static void cls() {
-        try {
-            Robot robot = new Robot();
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_L);
-            robot.keyRelease(KeyEvent.VK_L);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-            System.out.flush();
-        } catch (AWTException e) {
+    private static String[] cargaIngredientes() {
+        Scanner leer = new Scanner(System.in);
+        String[] ingredientes = new String[20];
+        int l = 20;
+        System.out.println("Ingrese ingrediente que tenga en la cocina\n(deje vacio para dejar de ingresar) ");
+        for (int i = 0; i < ingredientes.length; i++) {
+            System.out.print("Ingrediente %d: ".formatted(i + 1));
+            ingredientes[i] = leer.nextLine();
+            if (ingredientes[i].equalsIgnoreCase("")) {
+                l = i + 1;
+                break;
+            }
         }
+        String[] filtro = new String[l];
+        System.arraycopy(ingredientes, 0, filtro, 0, l);
+
+        if (ingredientes[0].equalsIgnoreCase("")) {
+            System.out.println("No se cargaron ingredientes.");
+        }
+
+        return filtro;
     }
 }

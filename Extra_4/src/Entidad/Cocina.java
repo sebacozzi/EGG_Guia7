@@ -64,7 +64,9 @@ public class Cocina {
     }
     public void buscaReceta(String[] ingredientes){
         System.out.println(separador);
+        if (recetas == null) return;
         for (Receta receta:recetas) {
+            
             if (receta.ingredientesEnRecetaB(ingredientes)){                
                 System.out.println(receta.toString());
                 System.out.println(separador);

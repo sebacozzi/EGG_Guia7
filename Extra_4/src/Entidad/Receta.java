@@ -128,7 +128,7 @@ public class Receta {
                 }
             }
         }
-        return (cont == ingre.length - 1);
+        return (cont == ingre.length );
     }
 
     /// pone los ingredientes y cantidades en vacio ("")

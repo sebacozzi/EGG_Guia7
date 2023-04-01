@@ -7,7 +7,6 @@ package Menu;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -79,12 +78,10 @@ public class Menu {
         return resultado;
     }
     
-    public int pregunta() throws InterruptedException{
+    public int pregunta(){
         // inicialización de Scanner
         Scanner leer = new Scanner(System.in);
         resultado=leer.nextInt();
-        for (int i = 0; i < 10000; i++) {
-        }
         cls();
         return resultado;
     }
@@ -101,8 +98,6 @@ public class Menu {
             else 
                 System.out.println("Opción incorrecta.");
         } while (validar);
-        for (int i = 0; i < 10000; i++) {
-        }
         cls();
         return resultado;
     }
@@ -137,15 +132,16 @@ public class Menu {
         System.out.println("Precione Enter/Intro para continuar.");
         leer.nextLine();
     }
-    private void cls() {
+    private static void cls() {
         try {
             Robot robot = new Robot();
-            robot..keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_CONTROL);
             robot.keyPress(KeyEvent.VK_L);
             robot.keyRelease(KeyEvent.VK_L);
             robot.keyRelease(KeyEvent.VK_CONTROL);
-            robot.delay(50);
+            robot.delay(100);
         } catch (AWTException e) {
+            e.printStackTrace();
         }
     }
 }
